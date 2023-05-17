@@ -28,7 +28,7 @@ spec:
           image: "{{ .Values.image.broker.repository }}:{{ .Values.image.broker.tag }}"
           imagePullPolicy: {{ .Values.image.broker.pullPolicy }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.resources.broker | nindent 12 }}
           env:
            - name: BROKER_IDENTIFIER
              valueFrom:
@@ -46,7 +46,7 @@ spec:
           image: "{{ .Values.image.proxy.repository }}:{{ .Values.image.proxy.tag }}"
           imagePullPolicy: {{ .Values.image.proxy.pullPolicy }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.resources.proxy | nindent 12 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -11,7 +11,7 @@ image:
     tag: "1.0.0"
 
 agent:
-  # -- Agent identifier acquired from the Legit platform
+  # -- REQUIRED: Agent identifier acquired from the Legit platform
   identifier: ""
   endpoint: "https://app.legitsecurity.co/broker"
   # -- If the agent needs a proxy to access the Legit app, set it here (e.g http://example.com)
@@ -30,12 +30,20 @@ serviceAccount:
   name: ""
 
 resources:
-  requests:
-    memory: "512Mi"
-    cpu: "500m"
-  limits:
-    memory: "512Mi"
-    cpu: "500m"
+  broker:
+    requests:
+      memory: "512Mi"
+      cpu: "500m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+  proxy:
+    requests:
+      memory: "512Mi"
+      cpu: "500m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
 
 podSecurityContext: {}
 securityContext: {}
