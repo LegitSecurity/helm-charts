@@ -1,0 +1,51 @@
+<p align="center">
+  <a href="https://legitsecurity.com" target="_blank" align="center">
+    <img src="https://www.legitsecurity.com/hubfs/Legit%20Security%20-%20white%2c%20logo%20left.svg" width="425">
+  </a>
+  <br />
+</p>
+
+# Legit Kubernetes Agent
+
+{{ template "chart.versionBadge" . }}
+
+## How to use Legit Helm charts
+
+[Helm](https://helm.sh) must be installed to use the charts.
+Please refer to Helm's [documentation](https://helm.sh/docs/) for instructions.
+
+After Helm is installed, add the Legit Security Helm repo. 
+
+```console
+helm repo add legit https://helm.legitsecurity.com
+```
+
+### Installing the Legit Kubernetes Agent (manual install):
+
+To install the agent under the name <RELEASE_NAME>.
+First, acquire the Agent Identifier from the Legit Platform integrations page.
+Then, install the agent on your Kubernetes cluster using the following command - 
+
+```console
+helm upgrade --install <RELEASE_NAME> \
+--set agent.identifier='<AGENT_IDENTIFIER>' \
+--namespace legit --create-namespace \
+legit/legit-kubernetes-agent
+```
+
+
+### Uninstalling the Chart
+
+To uninstall an Agent deployment named <RELEASE_NAME>:
+
+```bash
+helm uninstall <RELEASE_NAME>
+```
+
+The command removes all the Kubernetes components associated with the chart and deletes the Helm release.
+
+## All configuration options
+
+The following table lists the configurable parameters of the chart. Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
+
+{{ template "chart.valuesSection" . }}
