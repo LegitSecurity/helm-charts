@@ -6,6 +6,7 @@
 </p>
 
 # Legit Security Helm Charts
+
 Helm Charts for Legit Security
 
 ## Usage
