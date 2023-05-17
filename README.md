@@ -1,3 +1,10 @@
+<p align="center">
+  <a href="https://legitsecurity.com" target="_blank" align="center">
+    <img src="https://www.legitsecurity.com/hubfs/Legit%20Security%20-%20white%2c%20logo%20left.svg" width="425">
+  </a>
+  <br />
+</p>
+
 # Legit Security Helm Charts
 Helm Charts for Legit Security
 
