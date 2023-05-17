@@ -13,9 +13,7 @@ image:
 agent:
   # -- Agent identifier acquired from the Legit platform
   identifier: ""
-  
   endpoint: "https://app.legitsecurity.co/broker"
-
   # -- If the agent needs a proxy to access the Legit app, set it here (e.g http://example.com)
   # proxy: ""
 
