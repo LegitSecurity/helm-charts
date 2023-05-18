@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "kubernetes-agent.fullname" . }}
+  labels:
+    {{- include "kubernetes-agent.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "kubernetes-agent.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+            {{- include "kubernetes-agent.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "kubernetes-agent.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "{{ template "kubernetes-agent.fullname" . }}-broker"
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.broker.repository }}:{{ .Values.image.broker.tag }}"
+          imagePullPolicy: {{ .Values.image.broker.pullPolicy }}
+          resources:
+            {{- toYaml .Values.resources.broker | nindent 12 }}
+          env:
+           - name: BROKER_IDENTIFIER
+             valueFrom:
+              secretKeyRef:
+                name: {{ include "kubernetes-agent.fullname" . }}
+                key: identifier  
+           - name: BROKER_ENDPOINT
+             value: {{ .Values.agent.endpoint }}
+          {{- if .Values.agent.proxy }}
+           - name: BROKER_PROXY
+             value: {{ .Values.agent.proxy }}
+          {{- end }}
+           
+        - name: "{{ template "kubernetes-agent.fullname" . }}-proxy"
+          image: "{{ .Values.image.proxy.repository }}:{{ .Values.image.proxy.tag }}"
+          imagePullPolicy: {{ .Values.image.proxy.pullPolicy }}
+          resources:
+            {{- toYaml .Values.resources.proxy | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+          
