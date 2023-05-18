@@ -1,0 +1,19 @@
+apiVersion: v1
+entries:
+  legit-kubernetes-agent:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2023-05-18T07:36:09.640746261Z"
+    description: A Helm chart for Kubernetes that connects the cluster to the Legit
+      Security platform
+    digest: 91be42adbdd90498dfc77fefc0c854bd7cfb1382ffb1d87a15fdfa8684dc7027
+    maintainers:
+    - email: support@legitsecurity.com
+      name: LegitSecurity
+      url: https://legitsecurity.com
+    name: legit-kubernetes-agent
+    type: application
+    urls:
+    - https://github.com/LegitSecurity/helm-charts/releases/download/legit-kubernetes-agent-1.0.0/legit-kubernetes-agent-1.0.0.tgz
+    version: 1.0.0
+generated: "2023-05-18T07:36:09.640754462Z"
