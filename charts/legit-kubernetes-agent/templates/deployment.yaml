@@ -47,6 +47,13 @@ spec:
           imagePullPolicy: {{ .Values.image.proxy.pullPolicy }}
           resources:
             {{- toYaml .Values.resources.proxy | nindent 12 }}
+          ports:
+          - containerPort: 8001
+            livenessProbe:
+              tcpSocket:
+                port: 8001
+              initialDelaySeconds: 10
+              periodSeconds: 10
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
