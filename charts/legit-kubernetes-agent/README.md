@@ -57,7 +57,7 @@ The following table lists the configurable parameters of the chart. Specify each
 | fullnameOverride | string | `""` |  |
 | image.broker.pullPolicy | string | `"IfNotPresent"` |  |
 | image.broker.repository | string | `"ghcr.io/legitsecurity/legit-broker"` |  |
-| image.broker.tag | string | `"v0.5"` |  |
+| image.broker.tag | string | `"v1.3"` |  |
 | image.proxy.pullPolicy | string | `"IfNotPresent"` |  |
 | image.proxy.repository | string | `"ghcr.io/legitsecurity/legit-kubectl-proxy"` |  |
 | image.proxy.tag | string | `"1.0.0"` |  |
