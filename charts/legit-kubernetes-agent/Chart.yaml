@@ -4,9 +4,9 @@ description: A Helm chart for Kubernetes that connects the cluster to the Legit 
 
 type: application
 
-version: 1.0.3
+version: 1.0.4
 
-appVersion: "1.0.3"
+appVersion: "1.0.4"
 maintainers:
   - name: LegitSecurity
     email: support@legitsecurity.com
