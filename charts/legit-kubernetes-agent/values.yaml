@@ -51,3 +51,10 @@ podAnnotations: {}
 nodeSelector: {}
 tolerations: {}
 affinity: {}
+
+# If you're using a self signed certificate you'll need to set this as true and also create a secret named ca-cert-secret
+# with the value ca.crt as the ca certificate encoded in base64 or if you want the chart to create the secret for you
+# you can add selfSigned.caCertBase64 and it will create a secret for you
+selfSigned:
+  enabled: false
+  caCertBase64: ""
