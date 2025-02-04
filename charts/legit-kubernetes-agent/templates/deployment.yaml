@@ -11,16 +11,36 @@ spec:
       {{- include "kubernetes-agent.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-    {{- with .Values.podAnnotations }}
+      {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
+      {{- end }}
       labels:
-            {{- include "kubernetes-agent.selectorLabels" . | nindent 8 }}
+        {{- include "kubernetes-agent.selectorLabels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ include "kubernetes-agent.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+
+      {{- if .Values.selfSigned.enabled }}
+      initContainers:
+        - name: setup-ca-cert
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              echo "Decoding CA Certificate..."
+              base64 -d /tmp/ca-secret/ca.crt > /etc/ssl/certs/custom-ca.pem
+              echo "Updating CA Trust..."
+              update-ca-certificates || true
+          volumeMounts:
+            - name: ca-cert-volume
+              mountPath: /tmp/ca-secret
+            - name: ca-cert-location
+              mountPath: /etc/ssl/certs/
+      {{- end }}
+
       containers:
         - name: "{{ template "kubernetes-agent.fullname" . }}-broker"
           securityContext:
@@ -34,14 +54,20 @@ spec:
              valueFrom:
               secretKeyRef:
                 name: {{ include "kubernetes-agent.fullname" . }}
-                key: identifier  
+                key: identifier
            - name: BROKER_ENDPOINT
              value: {{ .Values.agent.endpoint }}
           {{- if .Values.agent.proxy }}
            - name: BROKER_PROXY
              value: {{ .Values.agent.proxy }}
           {{- end }}
-           
+          {{- if .Values.selfSigned.enabled }}
+          volumeMounts:
+            - name: ca-cert-location
+              mountPath: /etc/ssl/certs/custom-ca.pem
+              subPath: custom-ca.pem
+          {{- end }}
+
         - name: "{{ template "kubernetes-agent.fullname" . }}-proxy"
           image: "{{ .Values.image.proxy.repository }}:{{ .Values.image.proxy.tag }}"
           imagePullPolicy: {{ .Values.image.proxy.pullPolicy }}
@@ -54,6 +80,7 @@ spec:
               port: 8001
             initialDelaySeconds: 10
             periodSeconds: 10
+
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -67,4 +94,11 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
 
-          
+      {{- if .Values.selfSigned.enabled }}
+      volumes:
+        - name: ca-cert-volume
+          secret:
+            secretName: ca-cert-secret
+        - name: ca-cert-location
+          emptyDir: {}
+      {{- end }}
