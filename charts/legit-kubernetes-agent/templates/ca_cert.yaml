@@ -7,5 +7,5 @@ metadata:
     app: {{ include "kubernetes-agent.fullname" . }}
 type: Opaque
 data:
-  ca.crt: {{ .Values.selfSigned.caCertBase64 | quote }}
+  ca.crt: {{ .Values.selfSigned.caCertBase64 | b64enc | quote }}
 {{- end }}
